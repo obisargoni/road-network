@@ -10,7 +10,7 @@ class QuadTree(object):
 
     def __init__(self, data, mins, maxs, depth, nodeId):
 
-        if DEBUG: print "node id: "+str(nodeId)
+        if DEBUG: print( "node id: "+str(nodeId))
         self.mins=mins
         self.maxs=maxs
         self.depth=depth
@@ -34,8 +34,8 @@ class QuadTree(object):
 
     def add_square(self):
         mids = 0.5 * (self.maxs + self.mins)
-        if DEBUG: print self.data
-        if DEBUG: print mids
+        if DEBUG: print( self.data)
+        if DEBUG: print( mids)
         xmin, ymin = self.mins
         xmax, ymax = self.maxs
         xmid, ymid = mids
@@ -45,12 +45,12 @@ class QuadTree(object):
         sq_q3 = self.data[(self.data[:, 0] >= mids[0]) & (self.data[:, 1] < mids[1])]
         sq_q4 = self.data[(self.data[:, 0] >= mids[0]) & (self.data[:, 1] >= mids[1])]
 
-        if DEBUG: print "d1:" + str(sq_q1)
-        if DEBUG: print "d2:" + str(sq_q2)
-        if DEBUG: print "d3:" + str(sq_q3)
-        if DEBUG: print "d4:" + str(sq_q4)
+        if DEBUG: print( "d1:" + str(sq_q1))
+        if DEBUG: print( "d2:" + str(sq_q2))
+        if DEBUG: print( "d3:" + str(sq_q3))
+        if DEBUG: print( "d4:" + str(sq_q4))
 
-        if DEBUG: print "depth: "+str(self.depth)
+        if DEBUG: print( "depth: "+str(self.depth))
 
         nodeId=0
         if not globals.node_index:
@@ -58,7 +58,7 @@ class QuadTree(object):
         else:
             nodeId=max(globals.node_index)
 
-        if DEBUG: print "* node id: "+str(nodeId)
+        if DEBUG: print( "* node id: "+str(nodeId))
         if sq_q1.shape[0] > 0:
             nodeId=nodeId+1
             self.children.append(QuadTree(sq_q1, [xmin, ymin], [xmid, ymid],self.depth + 1, nodeId))
@@ -84,9 +84,9 @@ class QuadTree(object):
 
     def draw_rectangle(self, ax, depth):
         if depth is None or depth == 0:
-            if DEBUG2: print "square id: "+str(self.n_node_id)
-            if DEBUG2: print "min x,y: "+str(self.mins)
-            if DEBUG2: print "sizes: "+str(self.sizes)
+            if DEBUG2: print( "square id: "+str(self.n_node_id))
+            if DEBUG2: print( "min x,y: "+str(self.mins))
+            if DEBUG2: print( "sizes: "+str(self.sizes))
 
             box=Util.getCoordinates(self.mins,self.sizes)
             if globals.coord_id:
@@ -118,10 +118,10 @@ class QuadTree(object):
             else:
                 p4_id=globals.coord_id[box[3]]
 
-            if DEBUG2: print "box p1: "+str(p1_id)+" - "+str(box[0])
-            if DEBUG2: print "box p2: "+str(p2_id)+" - "+str(box[1])            
-            if DEBUG2: print "box p3: "+str(p3_id)+" - "+str(box[2])
-            if DEBUG2: print "box p4: "+str(p4_id)+" - "+str(box[3])
+            if DEBUG2: print( "box p1: "+str(p1_id)+" - "+str(box[0]))
+            if DEBUG2: print( "box p2: "+str(p2_id)+" - "+str(box[1])            )
+            if DEBUG2: print( "box p3: "+str(p3_id)+" - "+str(box[2]))
+            if DEBUG2: print( "box p4: "+str(p4_id)+" - "+str(box[3]))
 
             if box[0] in globals.edges:
                 rm_list=[]
@@ -179,7 +179,7 @@ class QuadTree(object):
             else:
                 globals.edges[box[3]]=set([box[1],box[2]]) 
 
-            if DEBUG2: print "--"
+            if DEBUG2: print( "--")
             rect = plt.Rectangle(self.mins, *self.sizes, zorder=2, ec='#000000', fc='none')
             ax.add_patch(rect)
 

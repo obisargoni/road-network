@@ -4,19 +4,22 @@ from QuadTree import QuadTree
 import Util
 import globals
 import numpy as np
-from random import randrange
+import random
 import os
 import sys
 
-def main(size=10, max_nodes=800):
+def main(size=10, max_nodes=800, seed = 1, outdir = "../"):
 	"""
 	if squares are not fully forming increase plane size
 	:param size:
 	:param max_nodes:
 	:return:
 	"""
-	print "size: "+str(size)
-	print "max_nodes: "+str(max_nodes)
+	print( "size: "+str(size))
+	print( "max_nodes: "+str(max_nodes))
+	print( "seed: "+str(seed))
+
+	random.seed(seed)
 
 	globals.init()
 	X=Util.getPlane(size)
@@ -28,10 +31,10 @@ def main(size=10, max_nodes=800):
 
 	QT.add_square()
 
-	print "Generating road network..."
+	print( "Generating road network...")
 	# for high density choose ones counter depth with highest number of squares randomly
 	while(True):
-		node=randrange(max(globals.node_index))
+		node=random.randrange(max(globals.node_index))
 		if len(globals.node_index)>max_nodes: # limit network generation by number of nodes
 			break
 
@@ -46,13 +49,13 @@ def main(size=10, max_nodes=800):
 	ax.set_ylim(0, size-1.0)
 
 	# for each depth generate squares
-	print "generating squares..."
+	print( "generating squares...")
 	for d in range(0,len(globals.node_index)):
 		QT.draw_rectangle(ax, depth=d)
 
-	print "writing data to files..."
-	fn = open('../node-list','w')
-	fe = open('../edge-list','w')
+	print( "writing data to files...")
+	fn = open( os.path.join(outdir,'node-list'),'w')
+	fe = open( os.path.join(outdir,'edge-list'),'w')
 
 	edgeCount=0 #directed edge count
 	for point in globals.edges:
@@ -66,17 +69,17 @@ def main(size=10, max_nodes=800):
 	fn.close()
 	fe.close()
 
-	print "# of edges: "+str(edgeCount)
+	print( "# of edges: "+str(edgeCount))
 
-	plt.savefig('../rand-quad-road-network.png')
+	plt.savefig(os.path.join(outdir, 'rand-quad-road-network.png'))
 
-	dir_path = os.path.dirname(os.path.realpath("."))
+	dir_path = os.path.dirname(os.path.realpath(outdir))
 
-	print "generate road network image at: "+ dir_path + "/rand-quad-road-network.png"
-	print "node list at: "+ dir_path + "/node-list"
-	print "edge list at: "+ dir_path + "/edge-list"
+	print( "generate road network image at: "+ dir_path + "/rand-quad-road-network.png")
+	print( "node list at: "+ dir_path + "/node-list")
+	print( "edge list at: "+ dir_path + "/edge-list")
 
-	print "Done"
+	print( "Done")
 
 
 if __name__ == "__main__":
